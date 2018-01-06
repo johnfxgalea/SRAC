@@ -20,6 +20,7 @@ if(NOT QBDI_FOUND)
     set(QBDI_INCLUDE_DIRS "${QBDI_ROOT_DIR}/include")
 endif()
 
+add_compile_options(-fno-stack-protector)
 add_executable(srac srac.c)
 target_include_directories(srac PUBLIC ${QBDI_INCLUDE_DIRS})
 target_link_libraries(srac ${QBDI_LIBRARIES})
