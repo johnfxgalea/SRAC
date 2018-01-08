@@ -35,4 +35,19 @@ LD_PRELOAD=PATH/TO/libQBDI.so ./srac AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 ## Building SRAC - QBDI - FRIDA
 
+To build:
+```
+cd SRAC-QBDI-FRIDA
+mkdir build
+cd build
+# If frida-compile is not installed
+  npm install frida-compile babelify
+  ./node_modules/.bin/frida-compile ../FridaQBDI_srac.js -o SRAC.js
+# else
+  frida-compile ../FridaQBDI_srac.js -o SRAC.js
+```
 
+To run:
+```
+frida ../../test/build/test -l ./SRAC.js
+```
