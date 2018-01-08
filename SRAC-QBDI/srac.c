@@ -40,7 +40,7 @@ int prog_main(int argc, char **argv){
 VMAction handle_call(VMInstanceRef vm, GPRState *gprState, FPRState *fprState, void *data) {
 
     // Obtain an analysis of the instruction from the VM
-    const InstAnalysis* instAnalysis = qbdi_getInstAnalysis(vm, QBDI_ANALYSIS_INSTRUCTION | QBDI_ANALYSIS_DISASSEMBLY);
+    const InstAnalysis* instAnalysis = qbdi_getInstAnalysis(vm, QBDI_ANALYSIS_INSTRUCTION);
     
     // Assert that it is a call instr
     assert(instAnalysis->isCall);
@@ -68,7 +68,7 @@ VMAction handle_call(VMInstanceRef vm, GPRState *gprState, FPRState *fprState, v
 VMAction handle_ret(VMInstanceRef vm, GPRState *gprState, FPRState *fprState, void *data) {
 
     // Obtain an analysis of the instruction from the VM
-    const InstAnalysis* instAnalysis = qbdi_getInstAnalysis(vm, QBDI_ANALYSIS_INSTRUCTION | QBDI_ANALYSIS_DISASSEMBLY);
+    const InstAnalysis* instAnalysis = qbdi_getInstAnalysis(vm, QBDI_ANALYSIS_INSTRUCTION);
 
     // Assert that it is a return instr
     assert(instAnalysis->isReturn);
@@ -128,6 +128,7 @@ int main(int argc, char** argv) {
     qbdi_addMnemonicCB(vm, "CALL64pcrel32", QBDI_POSTINST, handle_call, &ret_stack);    
     qbdi_addMnemonicCB(vm, "RETQ", QBDI_PREINST, handle_ret, &ret_stack);
 
+    // We want to instrument the module which contains the main function.
     res = qbdi_addInstrumentedModuleFromAddr(vm, (rword) &main);
     assert(res == true);
 
