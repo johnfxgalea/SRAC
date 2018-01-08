@@ -89,23 +89,17 @@ VMAction handle_ret(VMInstanceRef vm, GPRState *gprState, FPRState *fprState, vo
 
 
     // Check the validity of the saved IP
-    bool is_valid = false;
 
     while (ret_stack->top > ret_stack->base){
         ret_stack->top--;
                 
-        if (saved_ip == *(ret_stack->top)){
-            is_valid = true;
-            break;  
-        }
+        if (saved_ip == *(ret_stack->top))
+            return QBDI_CONTINUE;
     }
 
     // If it is not valid, we exit the program
-    if (!is_valid){
-        printf("Saved IP is not valid. Exiting program\n");
-        return QBDI_STOP;
-    }else
-        return QBDI_CONTINUE;
+    printf("Saved IP is not valid. Exiting program\n");
+    return QBDI_STOP;
 }
 
 int main(int argc, char** argv) {
