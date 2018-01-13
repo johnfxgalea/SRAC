@@ -17,7 +17,7 @@ vm.addInstrumentedModuleFromAddr(funcPtr);
 // Callback on call instructions
 var cb_call = vm.newInstCallback(function(vm, gpr, fpr, retStack) {
     inst = vm.getInstAnalysis();
-    
+
     // Calculate the fall instr addr right after the call instr. This is where the return jumps back to
     var fallInstrAddr = inst.address + inst.instSize;
 
@@ -62,4 +62,3 @@ var arg = Memory.allocUtf8String("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
 // Call the Secret function using QBDI and with our string as argument
 vm.call(funcPtr, [2, arg]);
-

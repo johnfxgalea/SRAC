@@ -11,7 +11,7 @@
 
 typedef struct{
 
-    rword ret_addrs[RSTACK_SIZE]; 
+    rword ret_addrs[RSTACK_SIZE];
     rword *base; // Points to base of stack
     rword *top; // Points to top of stack
 }ret_stack_t;
@@ -41,7 +41,7 @@ VMAction handle_call(VMInstanceRef vm, GPRState *gprState, FPRState *fprState, v
 
     // Obtain an analysis of the instruction from the VM
     const InstAnalysis* instAnalysis = qbdi_getInstAnalysis(vm, QBDI_ANALYSIS_INSTRUCTION);
-    
+
     // Assert that it is a call instr
     assert(instAnalysis->isCall);
 
@@ -72,7 +72,7 @@ VMAction handle_ret(VMInstanceRef vm, GPRState *gprState, FPRState *fprState, vo
 
     // Assert that it is a return instr
     assert(instAnalysis->isReturn);
-    
+
     ret_stack_t *ret_stack = (ret_stack_t *) data;
 
     // This ret could be the last ret of our simulated call. We determine this by checking if the stack is empty
@@ -92,7 +92,7 @@ VMAction handle_ret(VMInstanceRef vm, GPRState *gprState, FPRState *fprState, vo
 
     while (ret_stack->top > ret_stack->base){
         ret_stack->top--;
-                
+
         if (saved_ip == *(ret_stack->top))
             return QBDI_CONTINUE;
     }
@@ -122,10 +122,10 @@ int main(int argc, char** argv) {
     // Initialise ret stack
     ret_stack_t ret_stack;
     ret_stack.base = ret_stack.ret_addrs;
-    ret_stack.top = ret_stack.ret_addrs;  
+    ret_stack.top = ret_stack.ret_addrs;
 
     // Add callback to call (POST) and ret (PRE) instructions
-    qbdi_addMnemonicCB(vm, "CALL64pcrel32", QBDI_POSTINST, handle_call, &ret_stack);    
+    qbdi_addMnemonicCB(vm, "CALL64pcrel32", QBDI_POSTINST, handle_call, &ret_stack);
     qbdi_addMnemonicCB(vm, "RETQ", QBDI_PREINST, handle_ret, &ret_stack);
 
     // We want to instrument the module which contains the main function.

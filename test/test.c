@@ -14,7 +14,6 @@
 # define EXPORT __attribute__ ((visibility ("default")))
 #endif
 
-
 void copy_and_print(char *str){
 
   char str_cpy[20];
@@ -39,4 +38,3 @@ int main(int argc, char **argv){
 
   return  prog_main(argc, argv[1]);
 }
-
